@@ -17,7 +17,7 @@ def women_mainpage(request):
 
 def archive(request,year):
     if int(year) > 2022:
-        return redirect('womenhome',permanent=True)
+        return redirect('women-home')
     return HttpResponse(f'<h1>Архив по годам</h1><p>{year}<p>')
 
 def page_not_found(request,exception):
