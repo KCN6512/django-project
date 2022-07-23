@@ -1,0 +1,6 @@
+просмотр SQL-запроса: python manage.py sqlmigrate women 0001
+запуск сервера py manage.py runserver
+manage.py srartproject *name*
+manage.py startapp *appname*
+manage.py makemigrations
+manage.py migrate
