@@ -23,9 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('women/', include('women.urls')),
     path('', mainpage)
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # after 2.1 no need to write if.DEBUG
 
 handler404 = page_not_found
