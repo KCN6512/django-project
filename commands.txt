@@ -4,3 +4,6 @@ manage.py srartproject *name*
 manage.py startapp *appname*
 manage.py makemigrations
 manage.py migrate
+manage.py shell интеркативаня среда django
+
+object.save() сохранить в бд
