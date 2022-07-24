@@ -15,6 +15,9 @@ object.pk = object.id #pk = id number
 #interactive shell commands
 from django.db import connection
 connection.queries список словарей выполненных sql запросов
+ClassDb.objects.all() все записи ограничено до 21
+ClassDb.objects.save() сохранить в бд
+ClassDb.objects.delete() удалить из бд
 
 __gte сравнение больше или равно
 __lte сравнение меньше или равно
@@ -24,3 +27,4 @@ Women.objects.filter(pk__gte=2)  ряд у которого id больше ил
 Women.objects.exclude(=2)  ряд где id не равно 2
 Women.objects.get(pk=2) ряд у которого id 2 НО ЕСЛИ ВЕРНЕТСЯ БОЛЬШЕ 1 ИЛИ МЕНЬШЕ 1 ЗАПИСИ ВЕРНЕТ ОШИБКУ       возвращает непосредственно экземпляр записи
 Women.objects.filter(pk__lte=5).order_by('title') order_by сортирует query set по аргументу 
+Women.objects.order_by('-time_update') сортировка в оббратном порядке 
