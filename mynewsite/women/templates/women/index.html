@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <h1>Главная страница сайта</h1>
 </head>
 <body>
-    
+
+<ul>
+{% for i in menu %}
+<li>{{ i }}</li>
+{% endfor %}
+</ul>
+
 </body>
 </html>
