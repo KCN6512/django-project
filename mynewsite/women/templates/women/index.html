@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
+{% extends 'women/base.html' %}
 
-<ul>
-{% for i in menu %}
-<li>{{ i }}</li>
-{% endfor %}
-</ul>
 
-</body>
-</html>
+{% block content %}
+<h1>{{ title }}</h1>
+<p>Содержимое главной страницы</p>
+{% endblock %}
