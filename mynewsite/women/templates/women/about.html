@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>О сайте</title>
-</head>
-<body>
-    <h1>О приложении women</h1>
-    <ul>
-        {% for i in menu %}
-        <li>{{ i }}</li>
-        {% endfor %}
-        </ul>
-</body>
-</html>
+
+{% block content %}
+<h1>О приложении women</h1>
+<ul>
+    {% for i in menu %}
+    <li>{{ i }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
