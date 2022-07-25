@@ -5,7 +5,7 @@
 	{% for p in posts %}
 			<li><h2>{{p.title}}</h2>
 	{% autoescape on %}
-	{{p.content|linebreaks|truncatewords:50}}
+	{{p.content|linebreaks|truncatewords:100}}
 	{% endautoescape %}
 			<div class="clear"></div>
 			<p class="link-read-post"><a href="#">Читать пост</a></p>
