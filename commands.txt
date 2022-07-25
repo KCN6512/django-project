@@ -5,6 +5,7 @@ manage.py startapp *appname*
 manage.py makemigrations
 manage.py migrate
 manage.py shell интеркативаня среда django
+manage.py sqlmigrate women 0001 просмотр sql запроса при makemogrations
 
 object.save() сохранить в бд
 object.pk = object.id #pk = id number
