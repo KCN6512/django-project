@@ -8,7 +8,7 @@ def categories(request,catid):
     return HttpResponse(f'<h1>Статьи по категориям</h1><p>{catid}</p>')
 
 def mainpage(request):
-    return HttpResponse('Главная страница сайта')
+    return render(request,'')
 
 def women_mainpage(request):
     return HttpResponse('Главная страница раздела women')
