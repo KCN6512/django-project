@@ -21,7 +21,7 @@ from mynewsite import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('women/', include('women.urls')),
+    path('', include('women.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # after 1.7 no need to write if.DEBUG
 
 handler404 = page_not_found
