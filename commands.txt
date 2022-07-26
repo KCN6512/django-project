@@ -58,6 +58,7 @@ href {% url 'home' %} переход на страницу с именем home
 
 
 {% load static %} загружать статические  файлы
+{% extends 'women/base.html' %} в "наследуемом" html шаблоне
 
 django фильтры:
 
