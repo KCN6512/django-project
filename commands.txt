@@ -25,13 +25,12 @@ __lte сравнение меньше или равно
 
 Women.objects.filter(pk=2)  ряд с  id 2    возвращает QuerySet (состоящий из одного экземпляра записи)
 Women.objects.filter(pk__gte=2)  ряд у которого id больше или равно 2
-Women.objects.exclude(=2)  ряд где id не равно 2
+Women.objects.exclude(pk=2)  ряд где id не равно 2
 Women.objects.get(pk=2) ряд у которого id 2 НО ЕСЛИ ВЕРНЕТСЯ БОЛЬШЕ 1 ИЛИ МЕНЬШЕ 1 ЗАПИСИ ВЕРНЕТ ОШИБКУ       возвращает непосредственно экземпляр записи
 Women.objects.filter(pk__lte=5).order_by('title') order_by сортирует query set по аргументу 
 Women.objects.order_by('-time_update') сортировка в оббратном порядке 
-
-
-
+w_list = Women.objects.filter(pk__gte=3) список объектов с id больше или равно 3
+w_list.update(cat_id=2) присвоить полю всех объектов cat_id значение 2
 
 
 
