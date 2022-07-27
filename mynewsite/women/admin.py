@@ -13,7 +13,7 @@ class WomenAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id','name')
     list_display_links = ('id','name')
-    search_fields = ('name',)
+    search_fields = ('name',)#нужно передать кортеж поэтому запятая,
 
 admin.site.register(Women,WomenAdmin) #регистрация в админ панели модели Women
 admin.site.register(Category,CategoryAdmin)
