@@ -6,6 +6,7 @@ manage.py makemigrations
 manage.py migrate
 manage.py shell интеркативаня среда django
 manage.py sqlmigrate women 0001 просмотр sql запроса при makemogrations
+py manage.py createsuperuser создание суперпользователя
 
 object.save() сохранить в бд
 object.pk = object.id #pk = id number
