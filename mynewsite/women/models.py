@@ -25,4 +25,4 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("category", kwargs={"cat_id": self.pk})
+        return reverse("category", kwargs={"cat_id": self.pk}) # абсолютный url будет равен self.pk каждого экземпляра класса category(каждой записи),можно изменить на любой аттрибут маршрут с именем category||cat_id будет подставлен по шаблону из url category/<int:cat_id>
