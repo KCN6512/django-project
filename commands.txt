@@ -39,6 +39,7 @@ w_list.update(cat_id=2) присвоить полю всех объектов ca
 #jinja commands
 
 {% имя_тэга %}
+виды тэгов: simple tag простые тэги и inclusion tags включающие тэги
 {{ имя_переменной }}
 {{ value|имя_фильтра }}
 

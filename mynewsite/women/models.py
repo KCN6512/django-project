@@ -15,7 +15,7 @@ class Women(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("post", kwargs={"post_id": self.pk})
+        return reverse("post", kwargs={"post_id": self.pk}) #вернет url   site/post/post_id
 
     class Meta: #класс meta нужен для админ панели
         verbose_name = 'Известные актеры' #название в единственном числе с добавлением s в коцне
@@ -33,7 +33,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("category", kwargs={"cat_id": self.pk}) # абсолютный url будет равен self.pk каждого экземпляра класса category(каждой записи),можно изменить на любой аттрибут маршрут с именем category||cat_id будет подставлен по шаблону из url category/<int:cat_id>
+        return reverse("category", kwargs={"cat_id": self.pk}) # абсолютный url будет равен self.pk каждого экземпляра класса category(каждой записи),можно изменить на любой аттрибут маршрут с именем category||cat_id будет подставлен по шаблону из url category/<int:cat_id> вернет url  site/category/cat_id
     
     class Meta: #класс meta нужен для админ панели
         verbose_name = 'Категория' #название в единственном числе с добавлением s в коцне
