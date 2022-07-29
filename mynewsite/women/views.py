@@ -4,19 +4,13 @@ from django.shortcuts import redirect, render
 from .models import *
 
 
-menu = [
-    {'title': "О сайте",'url_name':'about'},
-    {'title': "Добавить статью",'url_name':'add_page'},
-    {'title': "Обратная связь",'url_name':'contact'},
-    {'title': "Войти",'url_name':'login'},
-]
+
 
 
 def index(request):
     posts = Women.objects.filter(is_published=True)
     context = {
         'posts': posts,
-        'menu': menu,
         'title': 'Главная страница',
         'cat_selected': 0,
     }
@@ -30,14 +24,13 @@ def show_category(request,cat_id):
 
     context = {
         'posts': posts,
-        'menu': menu,
         'title': 'Отображение по рубрикам',
         'cat_selected': cat_id,
     }
     return render(request,'women/index.html',context=context)
 
 def about(request):
-    return render(request,'women/about.html',{'title': 'О сайте','menu': menu})
+    return render(request,'women/about.html',{'title': 'О сайте'})
 
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
