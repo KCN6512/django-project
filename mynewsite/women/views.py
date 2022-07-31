@@ -1,6 +1,6 @@
 from re import M
 from django.http import Http404, HttpResponse, HttpResponseNotFound
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import *
 
 
@@ -48,4 +48,12 @@ def login(request):
     return HttpResponse('Авторизация')
 
 def show_post(request,post_id):
-    return HttpResponse(f'Отображение статьи с id = {post_id}')
+    post = get_object_or_404(Women, pk=post_id)
+
+    context = {
+        'post': post,
+        'title': post.title,
+        'cat_selected': post.cat_id,
+    }
+
+    return render(request,'women/post.html',context=context)
