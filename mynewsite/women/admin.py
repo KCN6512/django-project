@@ -8,12 +8,14 @@ class WomenAdmin(admin.ModelAdmin):
     search_fields = ('title','content')
     list_editable = ('is_published',)
     list_filter = ('is_published','time_create')
+    #prepopulated_fields = {'slug': ('title',)} используется для автосоздания slug'a
 
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id','name')
     list_display_links = ('id','name')
     search_fields = ('name',)#нужно передать кортеж поэтому запятая,
+    #prepopulated_fields = {'slug': ('name',)} используется для автосоздания slug'a
 
 admin.site.register(Women,WomenAdmin) #регистрация в админ панели модели Women
 admin.site.register(Category,CategoryAdmin)
