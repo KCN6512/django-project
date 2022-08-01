@@ -10,6 +10,7 @@ class Women(models.Model):
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True,verbose_name='Опубликовано')
     cat = models.ForeignKey('Category',on_delete=models.PROTECT,null=True,verbose_name='Категория')
+    slug = models.SlugField(null=True)
 
     def __str__(self) -> str:
         return self.title
