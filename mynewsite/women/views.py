@@ -1,6 +1,7 @@
-from re import M
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
+
+from .forms import *
 from .models import *
 
 
@@ -35,8 +36,14 @@ def about(request):
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
-def addpage(request):
-    return HttpResponse('Добавление статьи')
+def add_page(request):
+    if request.method == 'POST':
+        form = AddPostForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+    else:
+        form = AddPostForm()
+    return render(request,'women/addpage.html',{'form':form,'title':'Добавление статьи'})
 
 def contact(request):
     return HttpResponse('Обратная связь')
