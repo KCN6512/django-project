@@ -1,3 +1,4 @@
+VS CODE ctrl + y повторить действие
 просмотр SQL-запроса: python manage.py sqlmigrate women 0001
 запуск сервера py manage.py runserver
 manage.py srartproject *name*
