@@ -1,21 +1,35 @@
+from typing import Any, Dict
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.views.generic import ListView
 from .forms import *
 from .models import *
 
 
 
 
+class WomenHome(ListView):
+    model = Women
+    template_name = 'women/index.html'
+    context_object_name =  'posts'  
 
-def index(request):
-    posts = Women.objects.filter(is_published=True)
-    context = {
-        'posts': posts,
-        'title': 'Главная страница',
-        'cat_selected': 0,
-    }
-    return render(request,'women/index.html',context=context)
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
+        context =  super().get_context_data(**kwargs)
+        context['title'] = 'Главная страница'
+        context['cat_selected'] = 0
+        return context
+    
+    def get_queryset(self): # фильтр queryset
+        return Women.objects.filter(is_published=True)
+
+# def index(request):
+#     posts = Women.objects.filter(is_published=True)
+#     context = {
+#         'posts': posts,
+#         'title': 'Главная страница',
+#         'cat_selected': 0,
+#     }
+#     return render(request,'women/index.html',context=context)
     
 def show_category(request,cat_id):
     posts = Women.objects.filter(cat_id=cat_id)
