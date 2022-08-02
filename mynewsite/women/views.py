@@ -1,7 +1,8 @@
 from typing import Any, Dict
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 from .forms import *
 from .models import *
 
@@ -65,15 +66,27 @@ def about(request):
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
-def add_page(request):
-    if request.method == 'POST':
-        form = AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = AddPostForm()
-    return render(request,'women/addpage.html',{'form':form,'title':'Добавление статьи'})
+# def add_page(request):
+#     if request.method == 'POST':
+#         form = AddPostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('home')
+#     else:
+#         form = AddPostForm()
+#     return render(request,'women/addpage.html',{'form':form,'title':'Добавление статьи'})
+
+class AddPage(CreateView):
+    form_class = AddPostForm
+    template_name = 'women/addpage.html'
+    #автоматически редирект на get_absolute_url модели
+    success_url = reverse_lazy('home')#ручной редирект
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
+        context =  super().get_context_data(**kwargs)
+        context['title'] = 'Добавление статьи'
+        return context
+
 
 def contact(request):
     return HttpResponse('Обратная связь')
