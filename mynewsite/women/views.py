@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .forms import *
 from .models import *
 
@@ -31,18 +31,33 @@ class WomenHome(ListView):
 #     }
 #     return render(request,'women/index.html',context=context)
     
-def show_category(request,cat_id):
-    posts = Women.objects.filter(cat_id=cat_id)
+# def show_category(request,cat_id):
+#     posts = Women.objects.filter(cat_id=cat_id)
 
-    if not posts:
-        raise Http404()
+#     if not posts:
+#         raise Http404()
 
-    context = {
-        'posts': posts,
-        'title': 'Отображение по рубрикам',
-        'cat_selected': cat_id,
-    }
-    return render(request,'women/index.html',context=context)
+#     context = {
+#         'posts': posts,
+#         'title': 'Отображение по рубрикам',
+#         'cat_selected': cat_id,
+#     }
+#     return render(request,'women/index.html',context=context)
+
+class WomenCategory(ListView):
+    model = Women
+    template_name = 'women/index.html'
+    context_object_name = 'posts'
+    allow_empty = False # если страница пустая выдаст 404 
+
+    def get_queryset(self):
+        return Women.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True)#kwargs все параметры запроса
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
+        context =  super().get_context_data(**kwargs)
+        context['title'] = 'Категория - ' + str(context['posts'][0].cat)
+        context['cat_selected'] = context['posts'][0].cat_id
+        return context
 
 def about(request):
     return render(request,'women/about.html',{'title': 'О сайте'})
@@ -69,13 +84,24 @@ def addpage(request):
 def login(request):
     return HttpResponse('Авторизация')
 
-def show_post(request,post_id): #post_slug
-    post = get_object_or_404(Women, pk=post_id) #slug=post_slug
+# def show_post(request,post_id): #post_slug
+#     post = get_object_or_404(Women, pk=post_id) #slug=post_slug
 
-    context = {
-        'post': post,
-        'title': post.title,
-        'cat_selected': post.cat_id,
-    }
+#     context = {
+#         'post': post,
+#         'title': post.title,
+#         'cat_selected': post.cat_id,
+#     }
 
-    return render(request,'women/post.html',context=context)
+#     return render(request,'women/post.html',context=context)
+
+class ShowPost(DetailView):
+    model = Women
+    template_name = 'women/post.html'
+    pk_url_kwarg = 'post_id' #или pk или slug используется
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
+        context =  super().get_context_data(**kwargs)
+        context['title'] = context['post'].title
+        return context
