@@ -99,7 +99,7 @@ class ShowPost(DetailView):
     model = Women
     template_name = 'women/post.html'
     pk_url_kwarg = 'post_id' #или pk или slug используется
-    context_object_name = 'post'
+    context_object_name = 'post' # без этого получится {% for publisher in object_list %} с ним {% for publisher in post %}
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
