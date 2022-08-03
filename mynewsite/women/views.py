@@ -7,7 +7,7 @@ from .forms import *
 from .models import *
 
 
-class WomenHome(ListView):
+class WomenHome(ListView):# self.object_list
     model = Women
     template_name = 'women/index.html'
     context_object_name =  'posts'  
@@ -22,13 +22,13 @@ class WomenHome(ListView):
         return Women.objects.filter(is_published=True)
 
 
-class WomenCategory(ListView):
+class WomenCategory(ListView):#self.object_list
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'
     allow_empty = False # если страница пустая выдаст 404 
 
-    def get_queryset(self):
+    def get_queryset(self):#получить queryset откуда брать информацию
         return Women.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True)#kwargs все параметры запроса
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
@@ -43,10 +43,11 @@ def about(request):
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
-class AddPage(CreateView):
+class AddPage(CreateView): #вью для форм
     form_class = AddPostForm
     template_name = 'women/addpage.html'
     #автоматически редирект на get_absolute_url модели
+    #telegram send_msg('User добавил статью')
     success_url = reverse_lazy('home')#ручной редирект
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
@@ -64,11 +65,11 @@ def addpage(request):
 def login(request):
     return HttpResponse('Авторизация')
 
-class ShowPost(DetailView):
+class ShowPost(DetailView): #self.object
     model = Women
     template_name = 'women/post.html'
     pk_url_kwarg = 'post_id' #или pk или slug используется
-    context_object_name = 'post' # без этого получится {% for publisher in object_list %} с ним {% for publisher in post %}
+    context_object_name = 'post' # без этого получится {% for publisher in object %} с ним {% for publisher in post %}
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
