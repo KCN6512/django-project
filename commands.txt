@@ -75,3 +75,28 @@ django фильтры:
 
 
 DJANGO ORM
+a = Model.objects.all()
+a.title поле модели
+a.pk, a.id primary key id записи
+a.cat_id внешний ключ
+.cat ссылка на дургую модель из которую через . можно получать остальные значения
+>>> a[0].cat
+<Category: Актрисы>
+>>> a[0].cat_id
+1
+>>> a[0].cat.name
+'Актрисы'
+pk = id
+id = pk
+-перед аргументом ч обратном порядке
+from django.db import connection
+connection.queries список запросов
+Model.objects.all() все записи | все отсортировано в соответствии с Meta классом в модели
+Model.objects.all()[:5] первые 5 записей
+Model.objects.all()[3:5] с 3 по 5 нек включая 5
+
+СОРТИРОВКА
+Model.objects.order_by('pk') сортировка по первичному ключу
+Model.objects.all().reverse() сортировка наоборот 
+Model.objects.filter(pk__lte=2) выбрать строки со значением pk меньше или равно 2
+Model.objects.get(pk=2) выбрать только одну строку со значенеи pk = 2 если больше или меньше одной записи выдаст ошибку
