@@ -73,7 +73,6 @@ django фильтры:
 
 {% autoescape on %} обрабатывать html тэги в тексте как текст если OFF то отображать как тэги
 
-10:00 _set
 DJANGO ORM
 a = Model.objects.all()
 a.title поле модели
@@ -153,6 +152,41 @@ Model.objects.filter(Q(pk__lt=5) | Q(cat_id=2)) взять все записи �
 
 >>> Women.objects.order_by('pk').last()  
 <Women: Феникс Валорант>
+
+
+ПО ДАТЕ 
+
+>>> Women.objects.latest('time_update')  возвращает амую последнюю запись
+<Women: Феникс Валорант>
+
+>>> Women.objects.order_by('title').earliest('time_update')  возвращает самуюраннюю запись
+<Women: Дженсен Эклс>
+
+
+ВЫБОР ЗАПИСИ ОТНОСИТЕЛЬНО ТЕКУЩЕЙ
+
+>>> w = Women.objects.get(pk=5) 
+>>> w
+<Women: Джек Куэйд>
+#get_previous_by_column_name()
+>>> w.get_previous_by_time_update()
+<Women: Эрин Мориарти>
+#get_next_by_column_name()
+>>> w.get_next_by_time_update()     
+<Women: Эчпочмак>
+с условием
+w.get_next_by_time_update(pk__gte=10)
+
+EXIST AND COUNT
+
+>>> c3.women_set.exists() сущетствуют ли смешарики
+False
+
+>>> c3.women_set.count()  количество актеров
+9
+
+>>> Women.objects.filter(pk__gte=3).count()
+9
 
 pk = id
 id = pk
