@@ -27,13 +27,13 @@ ClassDb.objects.delete() удалить из бд
 __gte сравнение больше или равно
 __lte сравнение меньше или равно
 
-Women.objects.filter(pk=2)  ряд с  id 2    возвращает QuerySet (состоящий из одного экземпляра записи)
-Women.objects.filter(pk__gte=2)  ряд у которого id больше или равно 2
-Women.objects.exclude(pk=2)  ряд где id не равно 2
-Women.objects.get(pk=2) ряд у которого id 2 НО ЕСЛИ ВЕРНЕТСЯ БОЛЬШЕ 1 ИЛИ МЕНЬШЕ 1 ЗАПИСИ ВЕРНЕТ ОШИБКУ       возвращает непосредственно экземпляр записи
-Women.objects.filter(pk__lte=5).order_by('title') order_by сортирует query set по аргументу 
-Women.objects.order_by('-time_update') сортировка в оббратном порядке 
-w_list = Women.objects.filter(pk__gte=3) список объектов с id больше или равно 3
+Model.objects.filter(pk=2)  ряд с  id 2    возвращает QuerySet (состоящий из одного экземпляра записи)
+Model.objects.filter(pk__gte=2)  ряд у которого id больше или равно 2
+Model.objects.exclude(pk=2)  ряд где id не равно 2
+Model.objects.get(pk=2) ряд у которого id 2 НО ЕСЛИ ВЕРНЕТСЯ БОЛЬШЕ 1 ИЛИ МЕНЬШЕ 1 ЗАПИСИ ВЕРНЕТ ОШИБКУ       возвращает непосредственно экземпляр записи
+Model.objects.filter(pk__lte=5).order_by('title') order_by сортирует query set по аргументу 
+Model.objects.order_by('-time_update') сортировка в оббратном порядке 
+w_list = Model.objects.filter(pk__gte=3) список объектов с id больше или равно 3
 w_list.update(cat_id=2) присвоить полю всех объектов cat_id значение 2
 
 
@@ -86,6 +86,74 @@ a.cat_id внешний ключ
 1
 >>> a[0].cat.name
 'Актрисы'
+
+ВЫБОРКА ИЗ ВТОРИЧНОЙ МОДЕЛИ
+
+>>> c = Category.objects.get(pk=1) 
+>>> c
+<Category: Актрисы>
+>>> c.women_set если нужно переименовать women_set то нужно использовать related_name во внешнем ключе
+<django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager object at 0x000001F364773CD0>
+>>> c.women_set.all()
+<QuerySet [<Model: Карен Фукухара>, <Model: Эрин Мориарти>]>
+
+LOOKUPS фильтры полей
+НЕСКОЛЬКО ФИЛЬТРОВ МОЖНО Women.objects.filter(title__contains='Дж').filter(title__startwith='Джек')
+>>> Women.objects.filter(title__contains='Дж').filter(title__startswith='Джек') 
+<QuerySet [<Women: Джек Куэйд>]>
+
+или так 
+>>> Women.objects.filter(title__contains='Дж',title__startswith='Джек') 
+<QuerySet [<Women: Джек Куэйд>]>
+
+Model.objects.filter(pk__gte=2) вывод полей с первичным ключем id равным или больше 2
+Model.objects.filter(pk__gt=2) вывод полей с первичным ключем больше 2
+>>> Model.objects.filter(title__contains='Дж') вывод полей где в title есть Дж(чувствительно к регистру)
+<QuerySet [<Model: Джек Куэйд>, <Model: Дженсен Эклс>]>
+
+Model.objects.filter(title__icontains='дж') без учета регистра (в sqlite не рабоатте поиск по не ASCI символам)
+
+ВЫБОРКА ИЗ УКАЗАННЫХ ЗНАЧЕНИЙ В СПИСКЕ
+Model.objects.filter(pk__in=[1,3,5,7,9])                                   
+<QuerySet [<Women: Джек Куэйд>, <Women: Кирилл Немов>, <Women: Лаз Алонсо>, <Women: Энтони Старр>, <Women: Эрин Мориарти>]>
+
+Model.objects.filter(cat__in=[1, 2])      
+<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>, <Women: Карл Урбан>, <Women: Кирилл Немов>, <Women: 
+Лаз Алонсо>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>, <Women: Эчпочмак>]>
+
+Women.objects.filter(pk__in=[1,3,5,7,9], is_published=False) несколько условий
+<QuerySet []>
+
+класс Q И ИЛИ НЕ
+from django.db.models import Q
+
+~ тильда НЕ приоритет 1
+& И приоритет 2
+| ИЛИ приоритет 3
+
+Model.objects.filter(Q(pk__lt=5) | Q(cat_id=2)) взять все записи с pk меньше 5 или id категории равным 2
+<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>, <Women: Карл Урбан>, <Women: Кирилл Немов>, <Women: 
+Лаз Алонсо>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>, <Women: Эчпочмак>]>
+
+>>> Women.objects.filter(Q(pk__lt=5) & Q(cat_id=2))  
+<QuerySet [<Women: Карл Урбан>, <Women: Энтони Старр>]>
+
+>>> Women.objects.filter(~Q(pk__lt=5) | Q(cat_id=2)) 
+<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карл Урбан>, <Women: Кирилл Немов>,
+ <Women: Лаз Алонсо>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эчпочмак>]
+
+
+БЫСТРОЕ ПОЛУЧЕНИЕ ДАННЫХ ИЗ ТАБЛИЦЫ
+
+>>> Women.objects.first()
+<Women: Джек Куэйд>
+
+>>> Women.objects.order_by('pk').first() 
+<Women: Эрин Мориарти>
+
+>>> Women.objects.order_by('pk').last()  
+<Women: Феникс Валорант>
+
 pk = id
 id = pk
 -перед аргументом ч обратном порядке
