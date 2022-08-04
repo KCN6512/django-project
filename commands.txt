@@ -73,7 +73,7 @@ django фильтры:
 
 {% autoescape on %} обрабатывать html тэги в тексте как текст если OFF то отображать как тэги
 
-
+10:00 _set
 DJANGO ORM
 a = Model.objects.all()
 a.title поле модели
