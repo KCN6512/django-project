@@ -86,7 +86,17 @@ a.cat_id внешний ключ
 >>> a[0].cat.name
 'Актрисы'
 
-ВЫБОРКА ИЗ ВТОРИЧНОЙ МОДЕЛИ
+СОРТИРОВКА ПО ДЛИННЕ
+
+from django.db.models.functions import Length
+>>> Women.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
+<QuerySet [<Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>,
+ <Women: Кирилл Немов>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>]>
+
+
+ВЫБОРКА ИЗ ВТОРИЧНОЙ МОДЕЛИ _set
+
+The _set object is made available when related_name is not specified.
 
 >>> c = Category.objects.get(pk=1) 
 >>> c
@@ -187,6 +197,67 @@ False
 
 >>> Women.objects.filter(pk__gte=3).count()
 9
+
+
+ОБРАЩЕНИЕ К ПЕРВИЧНОЙ МОДЕЛИ ЧЕРЕЗ АТРИБУТ
+
+ИМЯПЕРВИЧНОЙМОДЕЛИ__НАЗВАНИЕПОЛЯПЕРВИЧНОЙМОДЕЛИ
+ДВА НИЖНИХ ПОДЧЕРКИВАНИЯ ОБРАЩЕНИЕ К ЗАПИСЯМ СВЯЗАННОЙ ТАБЛИЦЫ (делается join)
+
+>>> Women.objects.filter(cat__name='Актрисы') 
+<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
+
+>>> Women.objects.filter(cat__pk__in=[1]) 
+<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
+
+>>> Category.objects.filter(women__title__contains='Дж') 
+<QuerySet [<Category: Актеры>, <Category: Актеры>]>
+
+<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
+>>> Women.objects.filter(cat__name__contains='ры') 
+
+УНИКАЛЬНЫЕ ЗАПИСИ DISTINCT
+
+>>> Category.objects.filter(women__title__contains='Дж').distinct()
+<QuerySet [<Category: Актеры>]>
+
+ФУНКЦИИ АРГРЕГАЦИИ AGGREGATION
+
+from django.db.models import *
+Women.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
+
+>>> Women.objects.aggregate(Min('cat_id')) минимальный id равен 1
+{'cat_id__min': 1}
+
+>>> Women.objects.aggregate(Min('cat_id'), Max('cat_id')) несколько запросов
+{'cat_id__min': 1, 'cat_id__max': 2}
+
+>>> Women.objects.aggregate(cat_min=Min('cat_id'), cat_max=Max('cat_id'))  можно переименовать получаемые данные
+{'cat_min': 1, 'cat_max': 2}
+
+>>> Women.objects.aggregate(res=Sum('cat_id') - Count('cat_id'))          
+{'res': 9}
+
+>>> Women.objects.aggregate(res=Avg('cat_id'))                   
+{'res': 1.8181818181818181}
+
+>>> Women.objects.filter(pk__gt=4).aggregate(res=Avg('cat_id'))  
+{'res': 2.0}
+
+ВЫБОР КОНКРЕТНЫХ ПОЛЕЙ ЗАПИСИ
+
+>>> Women.objects.values('title', 'cat_id').get(pk=1) 
+{'title': 'Эрин Мориарти', 'cat_id': 1}
+
+ИЗ СВЯЗАННОЙ ТАБЛИЦЫ 
+
+>>> Women.objects.values('title', 'cat__name').get(pk=1) 
+{'title': 'Эрин Мориарти', 'cat__name': 'Актрисы'}
+
+
+42:10
+
+
 
 pk = id
 id = pk
