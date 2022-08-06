@@ -325,3 +325,30 @@ Model.objects.order_by('pk') сортировка по первичному кл
 Model.objects.all().reverse() сортировка наоборот 
 Model.objects.filter(pk__lte=2) выбрать строки со значением pk меньше или равно 2
 Model.objects.get(pk=2) выбрать только одну строку со значенеи pk = 2 если больше или меньше одной записи выдаст ошибку
+
+ДЕКОРАТОР ИЗМЕРЕНИЯ ВРЕМЕНИ И КОЛИЧЕСТВА запросов
+from django.db import connection, reset_queries
+import time
+import functools
+
+def query_debugger(func):
+
+    @functools.wraps(func)
+    def inner_func(*args, **kwargs):
+
+        reset_queries()
+        
+        start_queries = len(connection.queries)
+
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+
+        end_queries = len(connection.queries)
+
+        print(f"Function : {func.__name__}")
+        print(f"Number of Queries : {end_queries - start_queries}")
+        print(f"Finished in : {(end - start):.2f}s")
+        return result
+
+    return inner_func
