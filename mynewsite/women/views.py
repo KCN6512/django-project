@@ -2,6 +2,7 @@ from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from .forms import *
 from .models import *
@@ -75,3 +76,17 @@ class ShowPost(DetailView): #self.object
         context =  super().get_context_data(**kwargs)
         context['title'] = context['post'].title
         return context
+
+class Tablica(ListView):
+    model = Women
+    template_name = 'women/tablica.html'
+    context_object_name = 'zapis'
+
+    def get_queryset(self):#получить queryset откуда брать информацию
+        return Women.objects.values('title','cat__name')#kwargs все параметры запроса
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Таблица'
+        return context
+    

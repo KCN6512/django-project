@@ -10,4 +10,5 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('post/<int:post_id>', ShowPost.as_view(),name='post'), #slug:post_slug int:pk для Detail view
     path('category/<int:cat_id>', WomenCategory.as_view(), name='category'),
+    path('tablica/', Tablica.as_view(), name='tablica'),
 ]
