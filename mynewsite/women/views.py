@@ -1,12 +1,11 @@
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from .forms import *
 from .models import *
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class WomenHome(ListView):# self.object_list
     model = Women
@@ -21,7 +20,6 @@ class WomenHome(ListView):# self.object_list
     
     def get_queryset(self): # фильтр queryset
         return Women.objects.filter(is_published=True)
-
 
 class WomenCategory(ListView):#self.object_list
     model = Women
@@ -38,33 +36,20 @@ class WomenCategory(ListView):#self.object_list
         context['cat_selected'] = context['posts'][0].cat_id
         return context
 
-def about(request):
-    return render(request,'women/about.html',{'title': 'О сайте'})
-
-def page_not_found(request,exception):
-    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
-
-class AddPage(CreateView): #вью для форм
+class AddPage(LoginRequiredMixin, CreateView): #вью для форм
     form_class = AddPostForm
     template_name = 'women/addpage.html'
     #автоматически редирект на get_absolute_url модели
     #telegram send_msg('User добавил статью')
     success_url = reverse_lazy('home')#ручной редирект
+    login_url = reverse_lazy('home')
+    raise_exception = True
+
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
         context['title'] = 'Добавление статьи'
         return context
-
-
-def contact(request):
-    return HttpResponse('Обратная связь')
-
-def addpage(request):
-    return HttpResponse('Добавление статьи')
-
-def login(request):
-    return HttpResponse('Авторизация')
 
 class ShowPost(DetailView): #self.object
     model = Women
@@ -89,4 +74,15 @@ class Tablica(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Таблица'
         return context
-    
+
+def contact(request):
+    return HttpResponse('Обратная связь')
+
+def login(request):
+    return HttpResponse('Авторизация')
+
+def about(request):
+    return render(request,'women/about.html',{'title': 'О сайте'})
+
+def page_not_found(request,exception):
+    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
