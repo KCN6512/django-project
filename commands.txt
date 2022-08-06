@@ -221,7 +221,8 @@ False
 >>> Category.objects.filter(women__title__contains='Дж').distinct()
 <QuerySet [<Category: Актеры>]>
 
-ФУНКЦИИ АРГРЕГАЦИИ AGGREGATION
+ФУНКЦИИ АРГРЕГАЦИИ AGGREGATION 
+Возвращает словарь агрегированных значений (средние, суммы и т.д.)
 
 from django.db.models import *
 Women.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
@@ -254,8 +255,59 @@ Women.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
 >>> Women.objects.values('title', 'cat__name').get(pk=1) 
 {'title': 'Эрин Мориарти', 'cat__name': 'Актрисы'}
 
+АННТОИРОВАНИЕ ANNOTATIONS
 
-42:10
+
+>>> Women.objects.values('cat_id').annotate(Count('id')) подсчет количества записей(id) для каждой cat_id
+<QuerySet [{'cat_id': 1, 'id__count': 2}, {'cat_id': 2, 'id__count': 9}, {'cat_id': 3, 'id__count': 1}]>
+
+>>> c = Category.objects.annotate(Count('women'))   (women=связанная модель) у каждой записи появился __count
+>>> c
+<QuerySet [<Category: Актрисы>, <Category: Актеры>, <Category: Смешарики>]>
+>>> c[0].women__count
+2
+>>> c[1].women__count 
+9
+
+>>> c = Category.objects.annotate(total=Count('women')) можно переименовать
+>>> c[1].total       
+9
+
+>>> c = Category.objects.annotate(total=Count('women')).filter(total__gt=0)  категории где есть хотя бы 1 запись
+
+
+КЛАСС F обращение к полям таблицы как к переменным
+
+>>> Women.objects.filter(pk__gt=F('cat_id')) выбрать записи у которых id больше чем их cat_id
+
+ФУНКЦИИ СУБД 
+
+ps = Women.objects.annotate(len=Length('title')) аннотировать длинну имени
+>>> ps
+<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>, <Women: Карл Урбан>, <Women: Кирилл Немов>, <Women: 
+Лаз Алонсо>, <Women: Такси 15-69>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>, <Women: Эчпочмак>]>
+>>> for i in ps:
+...     print(i.title, i.len)
+... 
+Джек Куэйд 10
+Дженсен Эклс 12
+Илья Ванюшин 12
+Карен Фукухара 14
+Карл Урбан 10
+Кирилл Немов 12
+Лаз Алонсо 10
+Такси 15-69 11
+Феникс Валорант 15
+Энтони Старр 12
+Эрин Мориарти 13
+Эчпочмак 8
+>>>
+
+
+raw ЗАПРОСЫ К БАЗЕ ДАННЫХ
+
+>>> Women.objects.raw('SELECT * FROM women_women') 
+<RawQuerySet: SELECT * FROM women_women>
 
 
 
