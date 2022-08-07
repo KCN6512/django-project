@@ -1,6 +1,6 @@
 from django.urls import path
-
 from .views import *
+
 #urlки нужно закрывать слэшэм /
 urlpatterns = [
     path('', WomenHome.as_view(), name='home'),# необходимо вызвать как view()

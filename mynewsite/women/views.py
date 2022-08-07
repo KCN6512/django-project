@@ -6,8 +6,9 @@ from django.views.generic import ListView, DetailView, CreateView
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+from utils import *
 
-class WomenHome(ListView):# self.object_list
+class WomenHome(DataMixin,ListView):# self.object_list
     model = Women
     template_name = 'women/index.html'
     context_object_name =  'posts'  
@@ -21,7 +22,7 @@ class WomenHome(ListView):# self.object_list
     def get_queryset(self): # фильтр queryset
         return Women.objects.filter(is_published=True)
 
-class WomenCategory(ListView):#self.object_list
+class WomenCategory(DataMixin,ListView):#self.object_list
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'

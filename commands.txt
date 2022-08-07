@@ -352,3 +352,41 @@ def query_debugger(func):
         return result
 
     return inner_func
+
+
+PAGINATOR
+
+p = Paginator(women,2) 
+>>> p.count()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object is not callable
+>>> p.count
+6
+>>> p.num_pages
+3
+>>> p.page_range
+range(1, 4)
+>>> p1 = p.page(1)
+>>> p1.object_list
+['Эрин Мориарти', 'Карен Фукухара']
+>>> p1.has_next
+<bound method Page.has_next of <Page 1 of 3>>
+>>> p1.has_next()
+True
+>>> p1.has_previous()
+False
+>>> p1.has_other_pages()
+True
+>>> p1.next_page_number()
+2
+>>> p1.previous_page_number() 
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "c:\Users\trosh\Desktop\pitoncheg\Python_work\djangosite\venv\lib\site-packages\django\core\paginator.py", line 204, in previous_page_number        
+    return self.paginator.validate_number(self.number - 1)
+  File "c:\Users\trosh\Desktop\pitoncheg\Python_work\djangosite\venv\lib\site-packages\django\core\paginator.py", line 52, in validate_number
+    raise EmptyPage(_("That page number is less than 1"))
+django.core.paginator.EmptyPage: <exception str() failed>
+>>>
+
