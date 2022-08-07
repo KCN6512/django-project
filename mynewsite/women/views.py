@@ -76,6 +76,17 @@ class Tablica(ListView):
         context['title'] = 'Таблица'
         return context
 
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'women/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация'
+        return context
+    
+
 def contact(request):
     return HttpResponse('Обратная связь')
 

@@ -26,6 +26,5 @@ def show_menu():
     {'title': "Добавить статью",'url_name':'add_page'},
     {'title': "Обратная связь",'url_name':'contact'},
     {'title': "Таблица",'url_name':'tablica'},
-    {'title': "Войти",'url_name':'login'},
 ]
     return {'menu':menu}
