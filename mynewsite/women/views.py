@@ -54,7 +54,7 @@ class AddPage(LoginRequiredMixin, CreateView): #вью для форм
 class ShowPost(DetailView): #self.object
     model = Women
     template_name = 'women/post.html'
-    pk_url_kwarg = 'post_id' #или pk или slug используется
+    slug_url_kwarg = 'post_slug'
     context_object_name = 'post' # без этого получится {% for publisher in object %} с ним {% for publisher in post %}
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт

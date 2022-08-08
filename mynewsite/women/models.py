@@ -17,7 +17,7 @@ class Women(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("post", kwargs={"post_id": self.pk}) #вернет url   site/post/post_id
+        return reverse("post", kwargs={"post_slug": self.slug}) #вернет url   site/post/post_id
 
     class Meta: #класс meta нужен для админ панели
         verbose_name = 'Известные актеры' #название в единственном числе с добавлением s в коцне
