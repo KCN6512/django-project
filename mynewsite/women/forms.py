@@ -9,6 +9,10 @@ class AddPostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['cat'].empty_label = 'Категория не выбрана' #все это для того чтобы переименовать пустой параметр
 
+    cat_set = Category.objects.all()
+
+    cat = forms.ModelChoiceField(queryset=cat_set,label='Категория',required=False)
+
     class Meta:
         model = Women
         fields = ['title', 'content', 'photo', 'is_published', 'cat']
