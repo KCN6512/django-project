@@ -398,3 +398,10 @@ django.core.paginator.EmptyPage: <exception str() failed>
 
 УДАЛЕНИЕ КЭША СТРАНИЦЫ
 CTRL SHIFT R
+
+
+ОПТИМИЗАЦИЯ ЗАПРОСОВ 
+
+select_related(key) жадная загрузка связанных данных по внешнему ключу key который имеет тип ForeignKey
+
+prefetch_related(key) жадная загрузка связанных данных по внешнему ключу key который имеет тип ManyToManyField

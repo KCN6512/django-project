@@ -21,7 +21,7 @@ class WomenHome(DataMixin,ListView):# self.object_list
         return context
     
     def get_queryset(self): # фильтр queryset
-        return Women.objects.filter(is_published=True)
+        return Women.objects.filter(is_published=True).select_related('cat') #предварительанпя загрузка данных из связанрой модели
 
 class WomenCategory(DataMixin,ListView):#self.object_list
     model = Women
@@ -30,12 +30,13 @@ class WomenCategory(DataMixin,ListView):#self.object_list
     allow_empty = False # если страница пустая выдаст 404 
 
     def get_queryset(self):#получить queryset откуда брать информацию
-        return Women.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True)#kwargs все параметры запроса
+        return Women.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True).select_related('cat')#kwargs все параметры запроса
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
-        context['title'] = 'Категория - ' + str(context['posts'][0].cat)
-        context['cat_selected'] = context['posts'][0].cat_id
+        catg = Category.objects.get(pk=self.kwargs['cat_id'])
+        context['title'] = 'Категория - ' + str(catg.name)
+        context['cat_selected'] = catg.pk
         return context
 
 class AddPage(LoginRequiredMixin, CreateView): #вью для форм
