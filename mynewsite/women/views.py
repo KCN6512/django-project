@@ -1,12 +1,14 @@
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from utils import *
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout, login
 
 class WomenHome(DataMixin,ListView):# self.object_list
     model = Women
@@ -84,13 +86,31 @@ class RegisterUser(CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Регистрация'
         return context
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
     
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'women/login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Авторизация'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+    
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 def contact(request):
     return HttpResponse('Обратная связь')
-
-def login(request):
-    return HttpResponse('Авторизация')
 
 def about(request):
     return render(request,'women/about.html',{'title': 'О сайте'})

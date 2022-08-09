@@ -310,6 +310,10 @@ raw ЗАПРОСЫ К БАЗЕ ДАННЫХ
 <RawQuerySet: SELECT * FROM women_women>
 
 
+ВЫВЕСТИ ВСЕХ АКТРИС 
+>>> a = Women.objects.filter(cat__name='Актрисы') 
+>>> a
+<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
 
 pk = id
 id = pk
