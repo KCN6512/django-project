@@ -394,3 +394,7 @@ Traceback (most recent call last):
 django.core.paginator.EmptyPage: <exception str() failed>
 >>>
 
+
+
+УДАЛЕНИЕ КЭША СТРАНИЦЫ
+CTRL SHIFT R

@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import include, path
 from .views import *
 
 #urlки нужно закрывать слэшэм /
 urlpatterns = [
+    path('__debug__/', include('debug_toolbar.urls')),
     path('', WomenHome.as_view(), name='home'),# необходимо вызвать как view()
     path('about/', about, name='about'),
     path('add_page/', AddPage.as_view(), name='add_page'),
