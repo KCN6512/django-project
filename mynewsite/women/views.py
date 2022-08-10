@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -122,11 +122,18 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
-def contact(request):
-    return HttpResponse('Обратная связь')
+class ContactFormView(FormView): # formview не связан с базой данных
+    form_class = ContactForm
+    template_name = 'women/contact.html'
 
-def about(request):
-    return render(request,'women/about.html',{'title': 'О сайте'})
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Обратная связь'
+        return context
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
 
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')

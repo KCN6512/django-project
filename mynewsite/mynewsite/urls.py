@@ -22,6 +22,7 @@ from mynewsite import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('women.urls')),
+    path('captcha/', include('captcha.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # after 1.7 no need to write if.DEBUG
 
 handler404 = page_not_found

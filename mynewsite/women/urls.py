@@ -6,10 +6,9 @@ from .views import *
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('', WomenHome.as_view(), name='home'),# необходимо вызвать как view()
-    path('about/', about, name='about'),
     path('add_page/', AddPage.as_view(), name='add_page'),
     path('add_category/', AddCategory.as_view(), name='add_category'),
-    path('contact/', contact, name='contact'),
+    path('contact/', ContactFormView.as_view(), name='contact'),
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
     path('post/<slug:post_slug>', ShowPost.as_view(),name='post'), #slug:post_slug int:pk для Detail view

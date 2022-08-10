@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'women.apps.WomenConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -169,3 +170,6 @@ CACHES = {
         'LOCATION': BASE_DIR / 'mysite_cache',
     }
 }
+
+CAPTCHA_FONT_SIZE = 30
+CAPTCHA_IMAGE_SIZE = (150,50)
