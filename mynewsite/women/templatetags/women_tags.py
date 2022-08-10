@@ -24,8 +24,10 @@ def show_menu(context):
     menu = [
     {'title': "О сайте",'url_name':'about'},
     {'title': "Добавить статью",'url_name':'add_page'},
+    {'title': "Добавить категорию",'url_name':'add_category'},
     {'title': "Обратная связь",'url_name':'contact'},
     {'title': "Таблица",'url_name':'tablica'},
+    
 ]
     context['menu'] = menu
     return context

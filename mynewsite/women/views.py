@@ -54,6 +54,17 @@ class AddPage(LoginRequiredMixin, CreateView): #вью для форм
         context['title'] = 'Добавление статьи'
         return context
 
+class AddCategory(LoginRequiredMixin,CreateView):
+    form_class = AddCategoryForm
+    template_name = 'women/addcategory.html'
+    success_url = reverse_lazy('home')#ручной редирект
+    login_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Добавление категории'
+        return context
+
 class ShowPost(DetailView): #self.object
     model = Women
     template_name = 'women/post.html'

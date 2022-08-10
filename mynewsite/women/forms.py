@@ -1,4 +1,3 @@
-from multiprocessing import AuthenticationError
 from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -9,7 +8,7 @@ class AddPostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['cat'].empty_label = 'Категория не выбрана' #все это для того чтобы переименовать пустой параметр
 
-    cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория',required=False)
+    cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория',required=False)#сделать категория необязательной
 
     class Meta:
         model = Women
@@ -19,6 +18,11 @@ class AddPostForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'cols': 60, 'rows': 10}),
 
         }
+
+class AddCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
