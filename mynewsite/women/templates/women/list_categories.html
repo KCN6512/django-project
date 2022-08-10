@@ -1,4 +1,5 @@
-
+{% load cache %}
+{% cache 60 sidebar %}
 {% for c in cats %}
 	{% if c.pk == cat_selected %}
 		<li class='selected'>{{ c.name }}</li>
@@ -6,3 +7,4 @@
 		<li><a href='{{ c.get_absolute_url }}'>{{ c.name }}</a></li>
 	{% endif %}
 {% endfor %}
+{% endcache %}

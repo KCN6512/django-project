@@ -22,7 +22,6 @@ def show_categories(sort=None,cat_selected=0):
 @register.inclusion_tag(filename='women/list_menu.html',takes_context=True)
 def show_menu(context):
     menu = [
-    {'title': "О сайте",'url_name':'about'},
     {'title': "Добавить статью",'url_name':'add_page'},
     {'title': "Добавить категорию",'url_name':'add_category'},
     {'title': "Обратная связь",'url_name':'contact'},

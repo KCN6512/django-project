@@ -59,6 +59,7 @@ class AddCategory(LoginRequiredMixin,CreateView):
     template_name = 'women/addcategory.html'
     success_url = reverse_lazy('home')#ручной редирект
     login_url = reverse_lazy('home')
+    raise_exception = True
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
