@@ -145,10 +145,7 @@ class WomenUpdate(UpdateView, LoginRequiredMixin):
     def get_queryset(self) -> models.query.QuerySet:
         return Women.objects.filter(pk=self.kwargs['post_pk'])
 
-    pk_url_kwarg = 'post_pk'
-    # def get_object(self, queryset: models.query.QuerySet, post_pk):
-    #     #return Women.objects.get(pk=post_pk)
-    #     return self.model.objects.get(pk=post_pk)
+    pk_url_kwarg = 'post_pk' # обязательно для UpdateView
 
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
