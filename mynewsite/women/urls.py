@@ -15,4 +15,5 @@ urlpatterns = [
     path('category/<int:cat_id>', WomenCategory.as_view(), name='category'),
     path('tablica/', Tablica.as_view(), name='tablica'),
     path('register/', RegisterUser.as_view(), name='register'),
+    path('women_update/<int:post_pk>', WomenUpdate.as_view(), name='women_update'),
 ]

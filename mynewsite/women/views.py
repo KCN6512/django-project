@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, FormView
+from django.views.generic import ListView, DetailView, CreateView, FormView, UpdateView
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -134,6 +134,21 @@ class ContactFormView(FormView): # formview не связан с базой да
     def form_valid(self, form):
         print(form.cleaned_data)
         return redirect('home')
+
+
+class WomenUpdate(UpdateView, LoginRequiredMixin):
+    model = Women
+    fields = ['title', 'content']
+    #template_name = 'women/women_update.html' #всегда нужно указывать папку
+    template_name_suffix = '_update_form'
+
+    def get_queryset(self) -> models.query.QuerySet:
+        return Women.objects.filter(pk=self.kwargs['post_pk'])
+
+    pk_url_kwarg = 'post_pk'
+    # def get_object(self, queryset: models.query.QuerySet, post_pk):
+    #     #return Women.objects.get(pk=post_pk)
+    #     return self.model.objects.get(pk=post_pk)
 
 def page_not_found(request,exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
