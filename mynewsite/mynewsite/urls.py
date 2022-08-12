@@ -26,6 +26,7 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # after 1.7 no need to write if.DEBUG
 
 handler404 = page_not_found
+handler403 = not_enough_premission
 
 if settings.DEBUG:
     import debug_toolbar

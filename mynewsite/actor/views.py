@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, FormView, UpdateView
@@ -136,7 +136,7 @@ class ContactFormView(FormView): # formview не связан с базой да
         return redirect('home')
 
 
-class ActorUpdate(UpdateView, LoginRequiredMixin):
+class ActorUpdate(LoginRequiredMixin, UpdateView):
     model = Actor
     fields = ['title', 'content']
     #template_name = 'actor/actor_update.html' #всегда нужно указывать папку
@@ -147,5 +147,8 @@ class ActorUpdate(UpdateView, LoginRequiredMixin):
 
     pk_url_kwarg = 'post_pk' # обязательно для UpdateView
 
-def page_not_found(request,exception):
+def page_not_found(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+
+def not_enough_premission(request, exception):
+    return HttpResponseForbidden('<h1>У вас недостаточно прав,пожалуйста зарегистрируйтесь на сайте, или войдите под своим логином</h1>')
