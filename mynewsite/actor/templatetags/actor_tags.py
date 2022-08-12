@@ -1,5 +1,5 @@
 from django import template
-from women.models import *
+from actor.models import *
 
 register = template.Library() #создание экземпляра класса билблиотеки через который будет происходить регистрация тэгов
 
@@ -10,7 +10,7 @@ def get_categories(filter=None):#теперь тэг
     else:
         return Category.objects.filter(pk=filter)
 
-@register.inclusion_tag(filename='women/list_categories.html')
+@register.inclusion_tag(filename='actor/list_categories.html')
 def show_categories(sort=None,cat_selected=0):
     if not sort:
         cats = Category.objects.all()
@@ -19,7 +19,7 @@ def show_categories(sort=None,cat_selected=0):
 
     return {'cats':cats,'cat_selected':cat_selected}
 
-@register.inclusion_tag(filename='women/list_menu.html',takes_context=True)
+@register.inclusion_tag(filename='actor/list_menu.html',takes_context=True)
 def show_menu(context):
     menu = [
     {'title': "Добавить статью",'url_name':'add_page'},

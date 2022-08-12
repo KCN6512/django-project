@@ -3,7 +3,7 @@ from django.urls import reverse
 from autoslug import AutoSlugField
 
 
-class Women(models.Model):
+class Actor(models.Model):
     title = models.CharField(max_length=255,verbose_name='Заголовок')
     content = models.TextField(blank=True,verbose_name='Контент')
     photo = models.ImageField(upload_to='photos/%Y/%m/%d/',verbose_name='Фото')

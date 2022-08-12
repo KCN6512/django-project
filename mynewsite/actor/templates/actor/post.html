@@ -1,9 +1,9 @@
-{% extends 'women/base.html' %}
+{% extends 'actor/base.html' %}
 
 {% block content %}
 <h1>{{ post.title }}</h1>
 <p><a href="{% url 'post' 'rijiy-cat' %}">Рыжий кот</a></p>
-<p><a href="{% url 'women_update' post.pk %}">Редактировать</a></p>
+<p><a href="{% url 'actor_update' post.pk %}">Редактировать</a></p>
 {% if post.photo %}
 <p><img class='img-article-left' src='{{post.photo.url}}'></p>
 {% endif %}

@@ -6,12 +6,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('women', '0003_alter_category_options_alter_women_options_and_more'),
+        ('actor', '0003_alter_category_options_alter_actor_options_and_more'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='women',
+            model_name='actor',
             name='slug',
             field=models.SlugField(null=True, verbose_name='URL'),
         ),

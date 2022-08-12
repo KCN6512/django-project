@@ -6,12 +6,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('women', '0004_women_slug'),
+        ('actor', '0004_actor_slug'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='slug',
             field=models.SlugField(null=True, unique=True, verbose_name='URL'),
         ),

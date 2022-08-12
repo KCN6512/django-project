@@ -3,7 +3,7 @@ from .models import *
 from django.utils.safestring import mark_safe
 
 
-class WomenAdmin(admin.ModelAdmin):
+class ActorAdmin(admin.ModelAdmin):
     list_display = ('id','title','time_create','get_html_photo','is_published') # gethtmlphoto тобразить фотографии
     list_display_links = ('id','title')
     search_fields = ('title','content')
@@ -25,5 +25,5 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ('id','name')
     search_fields = ('name',)#нужно передать кортеж поэтому запятая,
 
-admin.site.register(Women,WomenAdmin) #регистрация в админ панели модели Women
+admin.site.register(Actor,ActorAdmin) #регистрация в админ панели модели Actor
 admin.site.register(Category,CategoryAdmin)

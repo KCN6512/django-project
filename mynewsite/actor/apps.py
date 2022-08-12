@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class WomenConfig(AppConfig):
+class ActorConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'women'
+    name = 'actor'
     verbose_name = 'Актеры Пацанов'

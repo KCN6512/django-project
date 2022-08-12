@@ -7,12 +7,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('women', '0005_alter_women_slug'),
+        ('actor', '0005_alter_actor_slug'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='slug',
             field=autoslug.fields.AutoSlugField(editable=True, null=True, populate_from='title', unique=True, verbose_name='URL'),
         ),

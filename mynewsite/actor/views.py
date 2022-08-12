@@ -10,9 +10,9 @@ from utils import *
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 
-class WomenHome(DataMixin,ListView):# self.object_list
-    model = Women
-    template_name = 'women/index.html'
+class ActorHome(DataMixin,ListView):# self.object_list
+    model = Actor
+    template_name = 'actor/index.html'
     context_object_name =  'posts'
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
@@ -21,16 +21,16 @@ class WomenHome(DataMixin,ListView):# self.object_list
         return context
     
     def get_queryset(self): # фильтр queryset
-        return Women.objects.filter(is_published=True).select_related('cat') #предварительанпя загрузка данных из связанрой модели
+        return Actor.objects.filter(is_published=True).select_related('cat') #предварительанпя загрузка данных из связанрой модели
 
-class WomenCategory(DataMixin,ListView):#self.object_list
-    model = Women
-    template_name = 'women/index.html'
+class ActorCategory(DataMixin,ListView):#self.object_list
+    model = Actor
+    template_name = 'actor/index.html'
     context_object_name = 'posts'
     allow_empty = False # если страница пустая выдаст 404 
 
     def get_queryset(self):#получить queryset откуда брать информацию
-        return Women.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True).select_related('cat')#kwargs все параметры запроса
+        return Actor.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True).select_related('cat')#kwargs все параметры запроса
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
@@ -41,7 +41,7 @@ class WomenCategory(DataMixin,ListView):#self.object_list
 
 class AddPage(LoginRequiredMixin, CreateView): #вью для форм
     form_class = AddPostForm
-    template_name = 'women/addpage.html'
+    template_name = 'actor/addpage.html'
     #автоматически редирект на get_absolute_url модели
     #telegram send_msg('User добавил статью')
     success_url = reverse_lazy('home')#ручной редирект
@@ -56,7 +56,7 @@ class AddPage(LoginRequiredMixin, CreateView): #вью для форм
 
 class AddCategory(LoginRequiredMixin,CreateView):
     form_class = AddCategoryForm
-    template_name = 'women/addcategory.html'
+    template_name = 'actor/addcategory.html'
     success_url = reverse_lazy('home')#ручной редирект
     login_url = reverse_lazy('home')
     raise_exception = True
@@ -67,8 +67,8 @@ class AddCategory(LoginRequiredMixin,CreateView):
         return context
 
 class ShowPost(DetailView): #self.object
-    model = Women
-    template_name = 'women/post.html'
+    model = Actor
+    template_name = 'actor/post.html'
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post' # без этого получится {% for publisher in object %} с ним {% for publisher in post %}
 
@@ -78,12 +78,12 @@ class ShowPost(DetailView): #self.object
         return context
 
 class Tablica(ListView):
-    model = Women
-    template_name = 'women/tablica.html'
+    model = Actor
+    template_name = 'actor/tablica.html'
     context_object_name = 'zapis'
 
     def get_queryset(self):#получить queryset откуда брать информацию
-        return Women.objects.values('title','cat__name')#kwargs все параметры запроса
+        return Actor.objects.values('title','cat__name')#kwargs все параметры запроса
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,7 +92,7 @@ class Tablica(ListView):
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
-    template_name = 'women/register.html'
+    template_name = 'actor/register.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
@@ -108,7 +108,7 @@ class RegisterUser(CreateView):
 
 class LoginUser(LoginView):
     form_class = LoginUserForm
-    template_name = 'women/login.html'
+    template_name = 'actor/login.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -124,7 +124,7 @@ def logout_user(request):
 
 class ContactFormView(FormView): # formview не связан с базой данных
     form_class = ContactForm
-    template_name = 'women/contact.html'
+    template_name = 'actor/contact.html'
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -136,14 +136,14 @@ class ContactFormView(FormView): # formview не связан с базой да
         return redirect('home')
 
 
-class WomenUpdate(UpdateView, LoginRequiredMixin):
-    model = Women
+class ActorUpdate(UpdateView, LoginRequiredMixin):
+    model = Actor
     fields = ['title', 'content']
-    #template_name = 'women/women_update.html' #всегда нужно указывать папку
+    #template_name = 'actor/actor_update.html' #всегда нужно указывать папку
     template_name_suffix = '_update_form'
 
     def get_queryset(self) -> models.query.QuerySet:
-        return Women.objects.filter(pk=self.kwargs['post_pk'])
+        return Actor.objects.filter(pk=self.kwargs['post_pk'])
 
     pk_url_kwarg = 'post_pk' # обязательно для UpdateView
 

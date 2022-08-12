@@ -12,7 +12,7 @@ class AddPostForm(forms.ModelForm):
     cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория',required=False)#сделать категория необязательной
 
     class Meta:
-        model = Women
+        model = Actor
         fields = ['title', 'content', 'photo', 'is_published', 'cat']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),

@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('women', '0002_category_women_cat'),
+        ('actor', '0002_category_actor_cat'),
     ]
 
     operations = [
@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             options={'ordering': ['id'], 'verbose_name': 'Категория', 'verbose_name_plural': 'Категории'},
         ),
         migrations.AlterModelOptions(
-            name='women',
+            name='actor',
             options={'ordering': ['title', 'time_create'], 'verbose_name': 'Известные актеры', 'verbose_name_plural': 'Известные актеры'},
         ),
         migrations.AlterField(
@@ -25,32 +25,32 @@ class Migration(migrations.Migration):
             field=models.CharField(db_index=True, max_length=100, verbose_name='Категория'),
         ),
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='cat',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='women.category', verbose_name='Категория'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='actor.category', verbose_name='Категория'),
         ),
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='content',
             field=models.TextField(blank=True, verbose_name='Контент'),
         ),
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='is_published',
             field=models.BooleanField(default=True, verbose_name='Опубликовано'),
         ),
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='photo',
             field=models.ImageField(upload_to='photos/%Y/%m/%d/', verbose_name='Фото'),
         ),
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='time_create',
             field=models.DateTimeField(auto_now_add=True, verbose_name='Дата создания'),
         ),
         migrations.AlterField(
-            model_name='women',
+            model_name='actor',
             name='title',
             field=models.CharField(max_length=255, verbose_name='Заголовок'),
         ),

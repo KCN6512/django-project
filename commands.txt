@@ -1,13 +1,13 @@
 Secret key нужен для хэшэй(для криптографии)
 VS CODE ctrl + y повторить действие
-просмотр SQL-запроса: python manage.py sqlmigrate women 0001
+просмотр SQL-запроса: python manage.py sqlmigrate actor 0001
 запуск сервера py manage.py runserver
 manage.py srartproject *name*
 manage.py startapp *appname*
 manage.py makemigrations
 manage.py migrate
 manage.py shell интеркативаня среда django
-manage.py sqlmigrate women 0001 просмотр sql запроса при makemogrations
+manage.py sqlmigrate actor 0001 просмотр sql запроса при makemogrations
 py manage.py createsuperuser создание суперпользователя
 1
 
@@ -62,7 +62,7 @@ href {% url 'home' %} переход на страницу с именем home
 
 
 {% load static %} загружать статические  файлы
-{% extends 'women/base.html' %} в "наследуемом" html шаблоне
+{% extends 'actor/base.html' %} в "наследуемом" html шаблоне
 
 django фильтры:
 
@@ -89,9 +89,9 @@ a.cat_id внешний ключ
 СОРТИРОВКА ПО ДЛИННЕ
 
 from django.db.models.functions import Length
->>> Women.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
-<QuerySet [<Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>,
- <Women: Кирилл Немов>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>]>
+>>> Actor.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
+<QuerySet [<Actor: Дженсен Эклс>, <Actor: Илья Ванюшин>, <Actor: Карен Фукухара>,
+ <Actor: Кирилл Немов>, <Actor: Феникс Валорант>, <Actor: Энтони Старр>, <Actor: Эрин Мориарти>]>
 
 
 ВЫБОРКА ИЗ ВТОРИЧНОЙ МОДЕЛИ _set
@@ -101,19 +101,19 @@ The _set object is made available when related_name is not specified.
 >>> c = Category.objects.get(pk=1) 
 >>> c
 <Category: Актрисы>
->>> c.women_set если нужно переименовать women_set то нужно использовать related_name во внешнем ключе
+>>> c.actor_set если нужно переименовать actor_set то нужно использовать related_name во внешнем ключе
 <django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager object at 0x000001F364773CD0>
->>> c.women_set.all()
+>>> c.actor_set.all()
 <QuerySet [<Model: Карен Фукухара>, <Model: Эрин Мориарти>]>
 
 LOOKUPS фильтры полей
-НЕСКОЛЬКО ФИЛЬТРОВ МОЖНО Women.objects.filter(title__contains='Дж').filter(title__startwith='Джек')
->>> Women.objects.filter(title__contains='Дж').filter(title__startswith='Джек') 
-<QuerySet [<Women: Джек Куэйд>]>
+НЕСКОЛЬКО ФИЛЬТРОВ МОЖНО Actor.objects.filter(title__contains='Дж').filter(title__startwith='Джек')
+>>> Actor.objects.filter(title__contains='Дж').filter(title__startswith='Джек') 
+<QuerySet [<Actor: Джек Куэйд>]>
 
 или так 
->>> Women.objects.filter(title__contains='Дж',title__startswith='Джек') 
-<QuerySet [<Women: Джек Куэйд>]>
+>>> Actor.objects.filter(title__contains='Дж',title__startswith='Джек') 
+<QuerySet [<Actor: Джек Куэйд>]>
 
 Model.objects.filter(pk__gte=2) вывод полей с первичным ключем id равным или больше 2
 Model.objects.filter(pk__gt=2) вывод полей с первичным ключем больше 2
@@ -124,13 +124,13 @@ Model.objects.filter(title__icontains='дж') без учета регистра
 
 ВЫБОРКА ИЗ УКАЗАННЫХ ЗНАЧЕНИЙ В СПИСКЕ
 Model.objects.filter(pk__in=[1,3,5,7,9])                                   
-<QuerySet [<Women: Джек Куэйд>, <Women: Кирилл Немов>, <Women: Лаз Алонсо>, <Women: Энтони Старр>, <Women: Эрин Мориарти>]>
+<QuerySet [<Actor: Джек Куэйд>, <Actor: Кирилл Немов>, <Actor: Лаз Алонсо>, <Actor: Энтони Старр>, <Actor: Эрин Мориарти>]>
 
 Model.objects.filter(cat__in=[1, 2])      
-<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>, <Women: Карл Урбан>, <Women: Кирилл Немов>, <Women: 
-Лаз Алонсо>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>, <Women: Эчпочмак>]>
+<QuerySet [<Actor: Джек Куэйд>, <Actor: Дженсен Эклс>, <Actor: Илья Ванюшин>, <Actor: Карен Фукухара>, <Actor: Карл Урбан>, <Actor: Кирилл Немов>, <Actor: 
+Лаз Алонсо>, <Actor: Феникс Валорант>, <Actor: Энтони Старр>, <Actor: Эрин Мориарти>, <Actor: Эчпочмак>]>
 
-Women.objects.filter(pk__in=[1,3,5,7,9], is_published=False) несколько условий
+Actor.objects.filter(pk__in=[1,3,5,7,9], is_published=False) несколько условий
 <QuerySet []>
 
 класс Q И ИЛИ НЕ
@@ -141,61 +141,61 @@ from django.db.models import Q
 | ИЛИ приоритет 3
 
 Model.objects.filter(Q(pk__lt=5) | Q(cat_id=2)) взять все записи с pk меньше 5 или id категории равным 2
-<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>, <Women: Карл Урбан>, <Women: Кирилл Немов>, <Women: 
-Лаз Алонсо>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>, <Women: Эчпочмак>]>
+<QuerySet [<Actor: Джек Куэйд>, <Actor: Дженсен Эклс>, <Actor: Илья Ванюшин>, <Actor: Карен Фукухара>, <Actor: Карл Урбан>, <Actor: Кирилл Немов>, <Actor: 
+Лаз Алонсо>, <Actor: Феникс Валорант>, <Actor: Энтони Старр>, <Actor: Эрин Мориарти>, <Actor: Эчпочмак>]>
 
->>> Women.objects.filter(Q(pk__lt=5) & Q(cat_id=2))  
-<QuerySet [<Women: Карл Урбан>, <Women: Энтони Старр>]>
+>>> Actor.objects.filter(Q(pk__lt=5) & Q(cat_id=2))  
+<QuerySet [<Actor: Карл Урбан>, <Actor: Энтони Старр>]>
 
->>> Women.objects.filter(~Q(pk__lt=5) | Q(cat_id=2)) 
-<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карл Урбан>, <Women: Кирилл Немов>,
- <Women: Лаз Алонсо>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эчпочмак>]
+>>> Actor.objects.filter(~Q(pk__lt=5) | Q(cat_id=2)) 
+<QuerySet [<Actor: Джек Куэйд>, <Actor: Дженсен Эклс>, <Actor: Илья Ванюшин>, <Actor: Карл Урбан>, <Actor: Кирилл Немов>,
+ <Actor: Лаз Алонсо>, <Actor: Феникс Валорант>, <Actor: Энтони Старр>, <Actor: Эчпочмак>]
 
 
 БЫСТРОЕ ПОЛУЧЕНИЕ ДАННЫХ ИЗ ТАБЛИЦЫ
 
->>> Women.objects.first()
-<Women: Джек Куэйд>
+>>> Actor.objects.first()
+<Actor: Джек Куэйд>
 
->>> Women.objects.order_by('pk').first() 
-<Women: Эрин Мориарти>
+>>> Actor.objects.order_by('pk').first() 
+<Actor: Эрин Мориарти>
 
->>> Women.objects.order_by('pk').last()  
-<Women: Феникс Валорант>
+>>> Actor.objects.order_by('pk').last()  
+<Actor: Феникс Валорант>
 
 
 ПО ДАТЕ 
 
->>> Women.objects.latest('time_update')  возвращает амую последнюю запись
-<Women: Феникс Валорант>
+>>> Actor.objects.latest('time_update')  возвращает амую последнюю запись
+<Actor: Феникс Валорант>
 
->>> Women.objects.order_by('title').earliest('time_update')  возвращает самуюраннюю запись
-<Women: Дженсен Эклс>
+>>> Actor.objects.order_by('title').earliest('time_update')  возвращает самуюраннюю запись
+<Actor: Дженсен Эклс>
 
 
 ВЫБОР ЗАПИСИ ОТНОСИТЕЛЬНО ТЕКУЩЕЙ
 
->>> w = Women.objects.get(pk=5) 
+>>> w = Actor.objects.get(pk=5) 
 >>> w
-<Women: Джек Куэйд>
+<Actor: Джек Куэйд>
 #get_previous_by_column_name()
 >>> w.get_previous_by_time_update()
-<Women: Эрин Мориарти>
+<Actor: Эрин Мориарти>
 #get_next_by_column_name()
 >>> w.get_next_by_time_update()     
-<Women: Эчпочмак>
+<Actor: Эчпочмак>
 с условием
 w.get_next_by_time_update(pk__gte=10)
 
 EXIST AND COUNT
 
->>> c3.women_set.exists() сущетствуют ли смешарики
+>>> c3.actor_set.exists() сущетствуют ли смешарики
 False
 
->>> c3.women_set.count()  количество актеров
+>>> c3.actor_set.count()  количество актеров
 9
 
->>> Women.objects.filter(pk__gte=3).count()
+>>> Actor.objects.filter(pk__gte=3).count()
 9
 
 
@@ -204,88 +204,88 @@ False
 ИМЯПЕРВИЧНОЙМОДЕЛИ__НАЗВАНИЕПОЛЯПЕРВИЧНОЙМОДЕЛИ
 ДВА НИЖНИХ ПОДЧЕРКИВАНИЯ ОБРАЩЕНИЕ К ЗАПИСЯМ СВЯЗАННОЙ ТАБЛИЦЫ (делается join)
 
->>> Women.objects.filter(cat__name='Актрисы') 
-<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
+>>> Actor.objects.filter(cat__name='Актрисы') 
+<QuerySet [<Actor: Карен Фукухара>, <Actor: Эрин Мориарти>]>
 
->>> Women.objects.filter(cat__pk__in=[1]) 
-<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
+>>> Actor.objects.filter(cat__pk__in=[1]) 
+<QuerySet [<Actor: Карен Фукухара>, <Actor: Эрин Мориарти>]>
 
->>> Category.objects.filter(women__title__contains='Дж') 
+>>> Category.objects.filter(actor__title__contains='Дж') 
 <QuerySet [<Category: Актеры>, <Category: Актеры>]>
 
-<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
->>> Women.objects.filter(cat__name__contains='ры') 
+<QuerySet [<Actor: Карен Фукухара>, <Actor: Эрин Мориарти>]>
+>>> Actor.objects.filter(cat__name__contains='ры') 
 
 УНИКАЛЬНЫЕ ЗАПИСИ DISTINCT
 
->>> Category.objects.filter(women__title__contains='Дж').distinct()
+>>> Category.objects.filter(actor__title__contains='Дж').distinct()
 <QuerySet [<Category: Актеры>]>
 
 ФУНКЦИИ АРГРЕГАЦИИ AGGREGATION 
 Возвращает словарь агрегированных значений (средние, суммы и т.д.)
 
 from django.db.models import *
-Women.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
+Actor.objects.annotate(text_len=Length('title')).filter(text_len__gt=10)
 
->>> Women.objects.aggregate(Min('cat_id')) минимальный id равен 1
+>>> Actor.objects.aggregate(Min('cat_id')) минимальный id равен 1
 {'cat_id__min': 1}
 
->>> Women.objects.aggregate(Min('cat_id'), Max('cat_id')) несколько запросов
+>>> Actor.objects.aggregate(Min('cat_id'), Max('cat_id')) несколько запросов
 {'cat_id__min': 1, 'cat_id__max': 2}
 
->>> Women.objects.aggregate(cat_min=Min('cat_id'), cat_max=Max('cat_id'))  можно переименовать получаемые данные
+>>> Actor.objects.aggregate(cat_min=Min('cat_id'), cat_max=Max('cat_id'))  можно переименовать получаемые данные
 {'cat_min': 1, 'cat_max': 2}
 
->>> Women.objects.aggregate(res=Sum('cat_id') - Count('cat_id'))          
+>>> Actor.objects.aggregate(res=Sum('cat_id') - Count('cat_id'))          
 {'res': 9}
 
->>> Women.objects.aggregate(res=Avg('cat_id'))                   
+>>> Actor.objects.aggregate(res=Avg('cat_id'))                   
 {'res': 1.8181818181818181}
 
->>> Women.objects.filter(pk__gt=4).aggregate(res=Avg('cat_id'))  
+>>> Actor.objects.filter(pk__gt=4).aggregate(res=Avg('cat_id'))  
 {'res': 2.0}
 
 ВЫБОР КОНКРЕТНЫХ ПОЛЕЙ ЗАПИСИ
 
->>> Women.objects.values('title', 'cat_id').get(pk=1) 
+>>> Actor.objects.values('title', 'cat_id').get(pk=1) 
 {'title': 'Эрин Мориарти', 'cat_id': 1}
 
 ИЗ СВЯЗАННОЙ ТАБЛИЦЫ 
 
->>> Women.objects.values('title', 'cat__name').get(pk=1) 
+>>> Actor.objects.values('title', 'cat__name').get(pk=1) 
 {'title': 'Эрин Мориарти', 'cat__name': 'Актрисы'}
 
 АННТОИРОВАНИЕ ANNOTATIONS
 
 
->>> Women.objects.values('cat_id').annotate(Count('id')) подсчет количества записей(id) для каждой cat_id
+>>> Actor.objects.values('cat_id').annotate(Count('id')) подсчет количества записей(id) для каждой cat_id
 <QuerySet [{'cat_id': 1, 'id__count': 2}, {'cat_id': 2, 'id__count': 9}, {'cat_id': 3, 'id__count': 1}]>
 
->>> c = Category.objects.annotate(Count('women'))   (women=связанная модель) у каждой записи появился __count
+>>> c = Category.objects.annotate(Count('actor'))   (actor=связанная модель) у каждой записи появился __count
 >>> c
 <QuerySet [<Category: Актрисы>, <Category: Актеры>, <Category: Смешарики>]>
->>> c[0].women__count
+>>> c[0].actor__count
 2
->>> c[1].women__count 
+>>> c[1].actor__count 
 9
 
->>> c = Category.objects.annotate(total=Count('women')) можно переименовать
+>>> c = Category.objects.annotate(total=Count('actor')) можно переименовать
 >>> c[1].total       
 9
 
->>> c = Category.objects.annotate(total=Count('women')).filter(total__gt=0)  категории где есть хотя бы 1 запись
+>>> c = Category.objects.annotate(total=Count('actor')).filter(total__gt=0)  категории где есть хотя бы 1 запись
 
 
 КЛАСС F обращение к полям таблицы как к переменным
 
->>> Women.objects.filter(pk__gt=F('cat_id')) выбрать записи у которых id больше чем их cat_id
+>>> Actor.objects.filter(pk__gt=F('cat_id')) выбрать записи у которых id больше чем их cat_id
 
 ФУНКЦИИ СУБД 
 
-ps = Women.objects.annotate(len=Length('title')) аннотировать длинну имени
+ps = Actor.objects.annotate(len=Length('title')) аннотировать длинну имени
 >>> ps
-<QuerySet [<Women: Джек Куэйд>, <Women: Дженсен Эклс>, <Women: Илья Ванюшин>, <Women: Карен Фукухара>, <Women: Карл Урбан>, <Women: Кирилл Немов>, <Women: 
-Лаз Алонсо>, <Women: Такси 15-69>, <Women: Феникс Валорант>, <Women: Энтони Старр>, <Women: Эрин Мориарти>, <Women: Эчпочмак>]>
+<QuerySet [<Actor: Джек Куэйд>, <Actor: Дженсен Эклс>, <Actor: Илья Ванюшин>, <Actor: Карен Фукухара>, <Actor: Карл Урбан>, <Actor: Кирилл Немов>, <Actor: 
+Лаз Алонсо>, <Actor: Такси 15-69>, <Actor: Феникс Валорант>, <Actor: Энтони Старр>, <Actor: Эрин Мориарти>, <Actor: Эчпочмак>]>
 >>> for i in ps:
 ...     print(i.title, i.len)
 ... 
@@ -306,14 +306,14 @@ ps = Women.objects.annotate(len=Length('title')) аннотировать дли
 
 raw ЗАПРОСЫ К БАЗЕ ДАННЫХ
 
->>> Women.objects.raw('SELECT * FROM women_women') 
-<RawQuerySet: SELECT * FROM women_women>
+>>> Actor.objects.raw('SELECT * FROM actor_actor') 
+<RawQuerySet: SELECT * FROM actor_actor>
 
 
 ВЫВЕСТИ ВСЕХ АКТРИС 
->>> a = Women.objects.filter(cat__name='Актрисы') 
+>>> a = Actor.objects.filter(cat__name='Актрисы') 
 >>> a
-<QuerySet [<Women: Карен Фукухара>, <Women: Эрин Мориарти>]>
+<QuerySet [<Actor: Карен Фукухара>, <Actor: Эрин Мориарти>]>
 
 pk = id
 id = pk
@@ -360,7 +360,7 @@ def query_debugger(func):
 
 PAGINATOR
 
-p = Paginator(women,2) 
+p = Paginator(actor,2) 
 >>> p.count()
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
