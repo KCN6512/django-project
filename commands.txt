@@ -421,3 +421,10 @@ a = Actor(title='Первая',content='Запись о первой',cat_id=3)
 >>> spisok = [a,b]
 >>> Actor.objects.bulk_create(spisok) 
 [<Actor: Первая>, <Actor: Вторая>]
+
+
+DJANGO SQL DB BACKUP
+py manage.py dumpdata > datadump.json
+python -Xutf8 ./manage.py dumpdata > data.json если ошибки то в UTF-8 запустить
+py manage.py migrate --run-syncdb синхронизация базы
+py manage.py loaddata data.json загрузить данные из json в базу данных

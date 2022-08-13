@@ -106,8 +106,12 @@ WSGI_APPLICATION = 'mynewsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'actordb',
+        'USER': 'postgres',
+        'PASSWORD': config('PASSWORD',default=''),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
