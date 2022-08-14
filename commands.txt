@@ -428,3 +428,5 @@ py manage.py dumpdata > datadump.json
 python -Xutf8 ./manage.py dumpdata > data.json если ошибки то в UTF-8 запустить
 py manage.py migrate --run-syncdb синхронизация базы
 py manage.py loaddata data.json загрузить данные из json в базу данных
+
+Postgres в bulk create ставит первичный ключ pk остальные нет
