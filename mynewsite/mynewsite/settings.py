@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'actor.apps.ActorConfig',
     'captcha',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
