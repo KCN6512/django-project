@@ -2,7 +2,7 @@ from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, FormView, UpdateView
+from django.views.generic import *
 from .forms import *
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -147,6 +147,17 @@ class ActorUpdate(LoginRequiredMixin, UpdateView):
         return Actor.objects.filter(pk=self.kwargs['post_pk'])
 
     pk_url_kwarg = 'post_pk' # обязательно для UpdateView
+
+class ActorDelete(LoginRequiredMixin, DeleteView):
+    model = Actor
+    form_class = DeleteActorForm
+    template_name = 'actor/actor_delete.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context['title'] = 'Удаление записи'
+        return context
 
 def page_not_found(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')

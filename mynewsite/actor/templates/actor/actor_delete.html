@@ -1,0 +1,10 @@
+{% extends 'actor/base.html' %}
+
+<h1>{{ title }}</h1>
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Вы уверены что хотите удалить статью "{{ object }}"?</p>
+    {{ form.as_p }}
+    <input type="submit" value="Подтвердить">
+</form>
+{% endblock content %}

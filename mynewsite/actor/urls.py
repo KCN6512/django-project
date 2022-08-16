@@ -16,4 +16,5 @@ urlpatterns = [
     path('tablica/', Tablica.as_view(), name='tablica'),
     path('register/', RegisterUser.as_view(), name='register'),
     path('actor_update/<int:post_pk>', ActorUpdate.as_view(), name='actor_update'),
+    path('actor_delete/<slug:slug>', ActorDelete.as_view(), name='actor_delete'),
 ]
