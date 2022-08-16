@@ -1,0 +1,15 @@
+{% extends 'actor/base.html' %}
+
+{% block content %}
+{% for i in zapis%}
+<table class='table'>
+    <tbody>
+      <tr>
+        <td>{{i.title}}</td>
+        <td>{{i.cat__name}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+{% endfor %}
+{% endblock %}
