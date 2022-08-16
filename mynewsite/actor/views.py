@@ -14,6 +14,7 @@ class ActorHome(DataMixin,ListView):# self.object_list
     model = Actor
     template_name = 'actor/index.html'
     context_object_name =  'posts'
+   
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
         context['title'] = 'Главная страница'
