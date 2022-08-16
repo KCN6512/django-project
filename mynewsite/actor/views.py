@@ -139,7 +139,7 @@ class ContactFormView(FormView): # formview не связан с базой да
 
 class ActorUpdate(LoginRequiredMixin, UpdateView):
     model = Actor
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'is_published']
     #template_name = 'actor/actor_update.html' #всегда нужно указывать папку
     template_name_suffix = '_update_form'
 
