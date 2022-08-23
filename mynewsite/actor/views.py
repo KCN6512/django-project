@@ -22,7 +22,7 @@ class ActorHome(DataMixin,ListView):# self.object_list
         return context
     
     def get_queryset(self): # фильтр queryset
-        return Actor.objects.filter(is_published=True).select_related('cat') #предварительанпя загрузка данных из связанрой модели
+        return Actor.objects.filter(is_published=True).prefetch_related('cat') #предварительанпя загрузка данных из связанрой модели
 
 class ActorCategory(DataMixin,ListView):#self.object_list
     model = Actor
@@ -139,7 +139,7 @@ class ContactFormView(FormView): # formview не связан с базой да
 
 class ActorUpdate(LoginRequiredMixin, UpdateView):
     model = Actor
-    fields = ['title', 'content', 'is_published']
+    fields = ['title', 'content', 'is_published','cat']
     #template_name = 'actor/actor_update.html' #всегда нужно указывать папку
     template_name_suffix = '_update_form'
 

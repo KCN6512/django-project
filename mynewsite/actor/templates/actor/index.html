@@ -4,7 +4,7 @@
 <ul class="list-articles">
 	{% for p in posts %}
 			<li><div class ='article-panel'>
-	<p class='first'>Категория: {{ p.cat }}</p>
+	<p class='first'>Категория: {{  p.cat.all|join:", " }}</p>
 	<p class='last'>Дата: {{ p.time_update|date:'d-m-Y H:i:s' }}</p>
 </div>		
 

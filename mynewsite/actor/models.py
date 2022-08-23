@@ -10,7 +10,7 @@ class Actor(models.Model):
     time_create = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True,verbose_name='Опубликовано')
-    cat = models.ForeignKey('Category',on_delete=models.PROTECT,null=True,verbose_name='Категория')
+    cat = models.ManyToManyField('Category',null=True,verbose_name='Категория')
     slug = AutoSlugField(populate_from='title',verbose_name='URL',unique=True,editable=True)
 
     def __str__(self) -> str:
