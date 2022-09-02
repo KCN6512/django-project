@@ -8,7 +8,6 @@ urlpatterns = [
     path('', ActorHome.as_view(), name='home'),# необходимо вызвать как view()
     path('add_page/', AddPage.as_view(), name='add_page'),
     path('add_category/', AddCategory.as_view(), name='add_category'),
-    path('contact/', ContactFormView.as_view(), name='contact'),
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
     path('post/<slug:post_slug>', ShowPost.as_view(),name='post'), #slug:post_slug int:pk для Detail view

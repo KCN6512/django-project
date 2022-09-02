@@ -31,7 +31,7 @@ class ActorCategory(DataMixin,ListView):#self.object_list
     allow_empty = False # если страница пустая выдаст 404 
 
     def get_queryset(self):#получить queryset откуда брать информацию
-        return Actor.objects.filter(cat_id=self.kwargs['cat_id'], is_published=True).select_related('cat')#kwargs все параметры запроса
+        return Actor.objects.filter(cat=self.kwargs['cat_id'], is_published=True).prefetch_related('cat')#kwargs все параметры запроса
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
@@ -122,19 +122,6 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
-
-class ContactFormView(FormView): # formview не связан с базой данных
-    form_class = ContactForm
-    template_name = 'actor/contact.html'
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Обратная связь'
-        return context
-
-    def form_valid(self, form):
-        print(form.cleaned_data)
-        return redirect('home')
 
 
 class ActorUpdate(LoginRequiredMixin, UpdateView):
