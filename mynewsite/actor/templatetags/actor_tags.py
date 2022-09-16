@@ -1,7 +1,7 @@
 from django import template
 from actor.models import *
 
-register = template.Library() #создание экземпляра класса билблиотеки через который будет происходить регистрация тэгов
+register = template.Library() #создание экземпляра класса библиотеки через который будет происходить регистрация тэгов
 
 @register.simple_tag(name='getcats')#декоратор регистарции | простой тэг
 def get_categories(filter=None):#теперь тэг
