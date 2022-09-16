@@ -1,6 +1,6 @@
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
-from django.shortcuts import redirect, render
+from django.shortcuts import *
 from django.urls import reverse_lazy
 from django.views.generic import *
 from .forms import *
@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from utils import *
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 
 class ActorHome(DataMixin,ListView):# self.object_list
     model = Actor
@@ -76,20 +77,9 @@ class ShowPost(DetailView): #self.object
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]: #для передачи контекста в темплейт
         context =  super().get_context_data(**kwargs)
         context['title'] = context['post'].title
+        context['total_likes'] = context['post'].total_likes()
         return context
 
-class Tablica(ListView):
-    model = Actor
-    template_name = 'actor/tablica.html'
-    context_object_name = 'zapis'
-
-    def get_queryset(self):#получить queryset откуда брать информацию
-        return Actor.objects.values('title','cat__name')#kwargs все параметры запроса
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Таблица'
-        return context
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
@@ -145,6 +135,13 @@ class ActorDelete(LoginRequiredMixin, DeleteView):
         context =  super().get_context_data(**kwargs)
         context['title'] = 'Удаление записи'
         return context
+
+@login_required
+def like_view(request, slug):
+    post = get_object_or_404(Actor, slug=request.POST.get('post_slug'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('post', args = [slug]))
+
 
 def page_not_found(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')

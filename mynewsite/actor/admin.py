@@ -10,7 +10,7 @@ class ActorAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
     list_filter = ('is_published','time_create')
     #prepopulated_fields = {'slug': ('title',)} используется для автосоздания slug'a
-    fields = ('title', 'slug', 'cat', 'content', 'photo', 'get_html_photo', 'is_published', 'time_create', 'time_update')# поля выводимые в админку при редактировании | только после readonly_fields можно жсюда добавить 'time_create', 'time_update'
+    fields = ('title', 'slug', 'cat', 'content', 'photo', 'get_html_photo', 'is_published', 'time_create', 'time_update', 'likes')# поля выводимые в админку при редактировании | только после readonly_fields можно жсюда добавить 'time_create', 'time_update'
     readonly_fields = ('time_create', 'time_update', 'get_html_photo')#нередактируемые поля
 
     def get_html_photo(self, object):

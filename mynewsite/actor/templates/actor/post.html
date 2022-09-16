@@ -2,12 +2,17 @@
 
 {% block content %}
 <h1>{{ post.title }}</h1>
+<form action="{% url 'like_post' post.slug %}" method="POST">
+    {% csrf_token %}
+    <button type="submit", name="post_slug", value="{{ post.slug }}">Мне нравится</button>
+    Лайков: {{ total_likes }}
+</form>
 <p><a href="{% url 'post' 'rijiy-cat' %}">Рыжий кот</a></p>
 <p><a href="{% url 'actor_update' post.pk %}">Редактировать</a></p>
 <p><a href="{% url 'actor_delete' post.slug %}">Удалить</a></p>
 {% if post.photo %}
 <p><img class='img-article-left' src='{{post.photo.url}}'></p>
-{% endif %}
+{% endif %} 
 
 {{ post.content|linebreaks }}
 {% endblock %}
