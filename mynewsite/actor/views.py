@@ -148,6 +148,7 @@ def like_view(request, slug):
         return HttpResponseRedirect(reverse('post', args = [slug]))
     else:
         post.likes.add(request.user)
+        #User.objects.get(username=request.user).liked_by.all() все посты лайкнутые юзером
     return HttpResponseRedirect(reverse('post', args = [slug]))
 
 
