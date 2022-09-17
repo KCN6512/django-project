@@ -4,7 +4,7 @@
 <h1>{{ post.title }}</h1>
 <form action="{% url 'like_post' post.slug %}" method="POST">
     {% csrf_token %}
-    <button type="submit", name="post_slug", value="{{ post.slug }}">Мне нравится</button>
+    <button type="submit", name="post_slug", value="{{ post.slug }}" class="btn">Мне нравится</button>
     Лайков: {{ total_likes }}
 </form>
 <p><a href="{% url 'post' 'rijiy-cat' %}">Рыжий кот</a></p>

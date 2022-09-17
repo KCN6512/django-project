@@ -124,8 +124,8 @@ class ActorUpdate(LoginRequiredMixin, UpdateView):
     #template_name = 'actor/actor_update.html' #всегда нужно указывать папку
     template_name_suffix = '_update_form'
 
-    def get_queryset(self) -> models.query.QuerySet:
-        return Actor.objects.filter(pk=self.kwargs['post_pk'])
+    def get_object(self) -> models.query.QuerySet:
+        return Actor.objects.get(pk=self.kwargs['post_pk'])
 
     pk_url_kwarg = 'post_pk' # обязательно для UpdateView
 
