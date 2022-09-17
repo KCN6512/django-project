@@ -1,5 +1,5 @@
-from django import template
 from actor.models import *
+from django import template
 
 register = template.Library() #создание экземпляра класса библиотеки через который будет происходить регистрация тэгов
 

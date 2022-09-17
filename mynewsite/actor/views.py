@@ -1,15 +1,19 @@
 from typing import Any, Dict
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseNotFound)
 from django.shortcuts import *
 from django.urls import reverse_lazy
 from django.views.generic import *
+from utils import *
+
 from .forms import *
 from .models import *
-from django.contrib.auth.mixins import LoginRequiredMixin
-from utils import *
-from django.contrib.auth.views import LoginView
-from django.contrib.auth import logout, login
-from django.contrib.auth.decorators import login_required
+
 
 class ActorHome(DataMixin,ListView):# self.object_list
     model = Actor
@@ -139,7 +143,11 @@ class ActorDelete(LoginRequiredMixin, DeleteView):
 @login_required
 def like_view(request, slug):
     post = get_object_or_404(Actor, slug=request.POST.get('post_slug'))
-    post.likes.add(request.user)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        return HttpResponseRedirect(reverse('post', args = [slug]))
+    else:
+        post.likes.add(request.user)
     return HttpResponseRedirect(reverse('post', args = [slug]))
 
 

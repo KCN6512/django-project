@@ -1,7 +1,7 @@
-from django.db import models
-from django.urls import reverse
 from autoslug import AutoSlugField
 from django.contrib.auth.models import User
+from django.db import models
+from django.urls import reverse
 
 
 class Actor(models.Model):
@@ -13,7 +13,7 @@ class Actor(models.Model):
     is_published = models.BooleanField(default=True,verbose_name='Опубликовано')
     cat = models.ManyToManyField('Category',verbose_name='Категория')
     slug = AutoSlugField(populate_from='title',verbose_name='URL',unique=True,editable=True)
-    likes = models.ManyToManyField(User)
+    likes = models.ManyToManyField(User, related_name='liked_by')
 
     def total_likes(self):
         return self.likes.count()

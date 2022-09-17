@@ -1,10 +1,9 @@
 from django.urls import include, path
-from .views import *
 
+from .views import *
 
 #urlки нужно закрывать слэшэм /
 urlpatterns = [
-    path('__debug__/', include('debug_toolbar.urls')),
     path('', ActorHome.as_view(), name='home'),# необходимо вызвать как view()
     path('add_page/', AddPage.as_view(), name='add_page'),
     path('add_category/', AddCategory.as_view(), name='add_category'),

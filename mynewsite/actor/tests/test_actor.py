@@ -1,10 +1,13 @@
 import os
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mynewsite.settings")
 import django
+
 django.setup()
 
-from django.test import TestCase
 from actor.models import *
+from django.test import TestCase
+
 
 class ActorTestCase(TestCase):
     def setUp(self):
