@@ -141,8 +141,8 @@ class ActorDelete(LoginRequiredMixin, DeleteView):
         return context
 
 @login_required
-def like_view(request, slug):
-    post = get_object_or_404(Actor, slug=request.POST.get('post_slug'))
+def like_view(request, slug):# slug из url адреса берется
+    post = get_object_or_404(Actor, slug=request.POST.get('post_slug'))#post_slug это name в форме.Из него берется значение value
     if request.user in post.likes.all():
         post.likes.remove(request.user)
         return HttpResponseRedirect(reverse('post', args = [slug]))
