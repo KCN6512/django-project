@@ -152,6 +152,22 @@ def like_view(request, slug):# slug из url адреса берется
     return HttpResponseRedirect(reverse('post', args = [slug]))
 
 
+class TestView(View):
+    template_name: str = 'actor/testtemplate.html'
+
+    def get(self, request, *args, **kwargs):
+        form = TestForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = TestForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+        print(cd.get('name'), cd.get('browser'), cd.get('comment'))
+        return redirect('test')
+    
+
+
 def page_not_found(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 

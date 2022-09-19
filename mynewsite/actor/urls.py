@@ -15,4 +15,5 @@ urlpatterns = [
     path('actor_update/<int:post_pk>', ActorUpdate.as_view(), name='actor_update'),
     path('actor_delete/<slug:slug>', ActorDelete.as_view(), name='actor_delete'),
     path('like/<slug:slug>', like_view, name='like_post'),
+    path('test', TestView.as_view(), name='test')
 ]

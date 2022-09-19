@@ -45,3 +45,8 @@ class LoginUserForm(AuthenticationForm):
 
 class DeleteActorForm(forms.Form):
     captcha = CaptchaField()
+
+class TestForm(forms.Form):
+    name = forms.CharField()
+    browser = forms.CharField()
+    comment = forms.CharField()
