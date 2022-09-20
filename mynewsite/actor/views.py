@@ -160,10 +160,13 @@ class TestView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = TestForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-        print(cd.get('name'), cd.get('browser'), cd.get('comment'))
+        # form = TestForm(request.POST)
+        # if form.is_valid():
+        #     cd = form.cleaned_data
+        # print(cd.get('name'), cd.get('browser'), cd.get('comment'))
+        # print(type(request.POST))
+        # print(request.POST.getlist('browser'))
+        print(request.POST['name'], request.POST['browser'], request.POST['comment'])
         return redirect('test')
     
 
