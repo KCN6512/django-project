@@ -10,6 +10,7 @@ def my_handler(created, **kwargs):
         print(f'Пост {instance} создан')
     else:
         print(f'Пост {instance} обновлен')
+        print(f'{instance.time_update}')
 
 
 
