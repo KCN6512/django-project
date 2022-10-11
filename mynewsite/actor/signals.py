@@ -5,10 +5,11 @@ from .models import *
 
 @receiver(post_save, sender=Actor)
 def my_handler(created, **kwargs):
+    instance = kwargs['instance']
     if created:
-        print('Пост создан')
+        print(f'Пост {instance} создан')
     else:
-        print('Пост обновлен')
+        print(f'Пост {instance} обновлен')
 
 
 
