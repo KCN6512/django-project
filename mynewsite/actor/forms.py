@@ -11,7 +11,7 @@ class AddPostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['cat'].empty_label = 'Категория не выбрана' #все это для того чтобы переименовать пустой параметр
 
-    cat = forms.ModelChoiceField(queryset=Category.objects.all(),label='Категория',required=False)#сделать категория необязательной
+    cat = forms.ModelMultipleChoiceField(queryset=Category.objects.all(),label='Категория',required=False)#сделать категория необязательной
 
     class Meta:
         model = Actor
