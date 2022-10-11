@@ -82,6 +82,7 @@ class ShowPost(DetailView): #self.object
         context =  super().get_context_data(**kwargs)
         context['title'] = context['post'].title
         context['total_likes'] = context['post'].total_likes()
+        #print(Actor.objects.get(slug='sssss').cat.all())
         return context
 
 
