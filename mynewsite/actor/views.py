@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.http import (HttpResponse, HttpResponseForbidden,
+from django.http import (HttpRequest, HttpResponse, HttpResponseForbidden,
                          HttpResponseNotFound)
 from django.shortcuts import *
 from django.urls import reverse_lazy
@@ -124,6 +124,12 @@ class ActorUpdate(LoginRequiredMixin, UpdateView):
     fields = ['title', 'content', 'is_published','cat']
     #template_name = 'actor/actor_update.html' #всегда нужно указывать папку
     template_name_suffix = '_update_form'
+
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        print(request.user.is_staff)
+        if request.user.is_staff is False:
+            return HttpResponse('Нет доступа')
+        return super().get(request, *args, **kwargs)
 
     def get_object(self) -> models.query.QuerySet:
         return Actor.objects.get(pk=self.kwargs['post_pk'])
