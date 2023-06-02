@@ -126,9 +126,8 @@ class ActorUpdate(LoginRequiredMixin, UpdateView):
     template_name_suffix = '_update_form'
 
     def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
-        print(request.user.is_staff)
-        if request.user.is_staff is False:
-            return HttpResponse('Нет доступа')
+        if not request.user.is_staff:
+            return HttpResponse('Менять содержание статьи может только ее создатель')
         return super().get(request, *args, **kwargs)
 
     def get_object(self) -> models.query.QuerySet:
