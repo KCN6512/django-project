@@ -10,7 +10,7 @@ manage.py shell интеркативаня среда django
 manage.py sqlmigrate actor 0001 просмотр sql запроса при makemogrations
 py manage.py createsuperuser создание суперпользователя
 python -m venv myvenv создание виртуальной среды
-
+docker exec -it avido-database-1  psql -U dbuser dbname # подключиться к базе данных в докере
 object.save() сохранить в бд
 object.pk = object.id #pk = id number
 
